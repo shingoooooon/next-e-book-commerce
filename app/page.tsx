@@ -2,61 +2,25 @@
 
 import Book from "./components/Book";
 import { getAllBooks } from "./lib/microcms/clients"
-import { BookType } from "../app/types/types"
-
-// 疑似データ
-const books = [
-  {
-    id: 1,
-    title: "Book 1",
-    thumbnail: "/thumbnails/discord-clone-udemy.png",
-    price: 2980,
-    author: {
-      id: 1,
-      name: "Author 1",
-      description: "Author 1 description",
-      profile_icon: "https://source.unsplash.com/random/2",
-    },
-    content: "Content 1",
-    created_at: new Date().toString(),
-    updated_at: new Date().toString(),
-  },
-  {
-    id: 2,
-    title: "Book 2",
-    thumbnail: "/thumbnails/notion-udemy.png",
-    price: 1980,
-    author: {
-      id: 2,
-      name: "Author 2",
-      description: "Author 2 description",
-      profile_icon: "https://source.unsplash.com/random/3",
-    },
-    content: "Content 2",
-    created_at: new Date().toString(),
-    updated_at: new Date().toString(),
-  },
-  {
-    id: 3,
-    title: "Book 3",
-    price: 4980,
-    thumbnail: "/thumbnails/openai-chatapplication-udem.png",
-    author: {
-      id: 3,
-      name: "Author 3",
-      description: "Author 3 description",
-      profile_icon: "https://source.unsplash.com/random/4",
-    },
-    content: "Content 3",
-    created_at: new Date().toString(),
-    updated_at: new Date().toString(),
-  },
-  // 他の本のデータ...
-];
+import { BookType, Purchase, User } from "../app/types/types"
+import { getServerSession } from "next-auth";
+import { nextAuthOptions } from "./lib/next-auth/options";
 
 // eslint-disable-next-line @next/next/no-async-client-component
 export default async function Home() {
   const { contents } = await getAllBooks();
+  const session = await getServerSession(nextAuthOptions);
+  const user: User = session?.user as User;
+
+  let purchaseBookIds: any;
+
+  if (user) {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/purchases/${user.id}`
+    );
+    const purchasesData = await res.json();
+    purchaseBookIds = purchasesData.map((purchase: Purchase) => purchase.bookId);
+  }
 
   return (
     <>
@@ -65,7 +29,11 @@ export default async function Home() {
           Book Commerce
         </h2>
         {contents.map((book: BookType) => (
-          <Book key={book.id} book={book} />
+          <Book
+            key={book.id}
+            book={book}
+            isPurchased={purchaseBookIds.includes(book.id)}
+          />
         ))}
       </main>
     </>
