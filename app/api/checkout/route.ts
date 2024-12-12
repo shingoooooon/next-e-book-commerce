@@ -31,7 +31,7 @@ export const POST = async (request: Request) => {
             cancel_url: 'http://localhost:3000'
         })
         return NextResponse.json({ checkout_url: session.url });
-    } catch (err: unknown) {
-        return NextResponse.json({ error: "An unknown error occurred." });
+    } catch (err) {
+        return NextResponse.json(err);
     }
 }
