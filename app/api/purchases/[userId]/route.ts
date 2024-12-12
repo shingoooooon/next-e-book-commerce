@@ -1,18 +1,20 @@
 import { NextResponse } from "next/server";
 import prisma from "../../../lib/prisma";
 
-export const GET = async (request: Request, context: { params: { userId: string } }) => {
-    const { userId } = context.params;
-
+export async function GET(
+    request: Request,
+    { params }: { params: { userId: string } }
+  ) {
+    const userId = params.userId;
+  
     try {
-        const purchases = await prisma.purchase.findMany({
-            where: {
-                userId: userId
-            }
-        })
-
-        return NextResponse.json(purchases);
+      const purchase = await prisma.purchase.findMany({
+        where: { userId: userId },
+      });
+      console.log(purchase);
+  
+      return NextResponse.json(purchase);
     } catch (err) {
-        return NextResponse.json(err);
+      return NextResponse.json(err);
     }
-}
+  }
