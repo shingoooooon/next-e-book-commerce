@@ -1,8 +1,8 @@
 import { NextResponse } from "next/server";
 import prisma from "../../../lib/prisma";
 
-export const GET = async (request: Request, { params }: { params: { userId: string }}) => {
-    const userId = params.userId;
+export const GET = async (request: Request, context: { params: { userId: string } }) => {
+    const { userId } = context.params;
 
     try {
         const purchases = await prisma.purchase.findMany({
