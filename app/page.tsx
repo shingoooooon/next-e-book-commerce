@@ -1,5 +1,3 @@
-// "use client";
-
 import Book from "./components/Book";
 import { getAllBooks } from "./lib/microcms/clients"
 import { BookType, Purchase, User } from "../app/types/types"
@@ -32,7 +30,7 @@ export default async function Home() {
           <Book
             key={book.id}
             book={book}
-            isPurchased={purchaseBookIds.includes(book.id)}
+            isPurchased={purchaseBookIds?.includes(book.id)}
           />
         ))}
       </main>
