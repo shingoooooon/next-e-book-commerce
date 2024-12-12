@@ -3,6 +3,8 @@ import localFont from "next/font/local";
 import "./globals.css";
 import Header from "./components/Header";
 import { NextAuthProvider } from "./lib/next-auth/provider"
+import { Suspense } from "react";
+import Loading from "./loading"
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -32,7 +34,9 @@ export default function RootLayout({
       >
         <NextAuthProvider >
           <Header />
-          {children}
+          <Suspense fallback={<Loading />}>
+            {children}
+          </Suspense>
         </NextAuthProvider>
       </body>
     </html>
