@@ -3,7 +3,6 @@ import Image from "next/image";
 import { nextAuthOptions } from "../lib/next-auth/options";
 import { BookType, Purchase, User } from "../types/types";
 import { getDetailBook } from "../lib/microcms/clients";
-import Book from "../components/Book";
 import PurchaseBook from "../components/PurchaseBook";
 
 export default async function ProfilePage() {
@@ -46,11 +45,11 @@ export default async function ProfilePage() {
       <span className="font-medium text-lg mb-4 mt-4 block">My Books</span>
       {purchaseBooks?.map((purchaseBook: BookType) => {
         return (
-          <div className="flex items-center gap-6">
-            <PurchaseBook
-              key={purchaseBook.id}
-              purchaseBook={purchaseBook}
-            />
+          <div
+            key={purchaseBook.id}
+            className="flex items-center gap-6"
+          >
+            <PurchaseBook purchaseBook={purchaseBook}/>
           </div>
         )
       })}

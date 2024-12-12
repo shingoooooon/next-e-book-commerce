@@ -1,10 +1,10 @@
 import Image from "next/image";
 import React from "react";
 import { getDetailBook } from "../../lib/microcms/clients";
-// import { getDetailBook } from "@/lib/microcms/clients";
+import { BookType } from "@/app/types/types";
 
 const DetailBook = async ({ params }: { params:  { id: string } }) => {
-    const book = await getDetailBook(params.id);
+    const book: BookType = await getDetailBook(params.id);
 
   return (
     <div className="container mx-auto p-4">
@@ -24,8 +24,8 @@ const DetailBook = async ({ params }: { params:  { id: string } }) => {
           />
 
           <div className="flex justify-between items-center mt-2">
-            <span className="text-sm text-gray-500">Publish: {new Date(book.publishedAt as any).toLocaleString()}</span>
-            <span className="text-sm text-gray-500">Update: {new Date(book.updatedAt as any).toLocaleString()}</span>
+            <span className="text-sm text-gray-500">Publish: {new Date(book.publishedAt).toLocaleString()}</span>
+            <span className="text-sm text-gray-500">Update: {new Date(book.updatedAt).toLocaleString()}</span>
           </div>
         </div>
       </div>

@@ -3,7 +3,6 @@
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
-import { NextResponse } from "next/server";
 
 const PurchaseSuccess = () => {
   const searchParams = useSearchParams();

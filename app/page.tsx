@@ -10,7 +10,7 @@ export default async function Home() {
   const session = await getServerSession(nextAuthOptions);
   const user: User = session?.user as User;
 
-  let purchaseBookIds: any;
+  let purchaseBookIds: string[];
 
   if (user) {
     const res = await fetch(
