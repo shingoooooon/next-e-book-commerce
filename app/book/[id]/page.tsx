@@ -4,7 +4,8 @@ import { getDetailBook } from "../../lib/microcms/clients";
 import { BookType } from "@/app/types/types";
 
 const DetailBook = async ({ params }: { params:  { id: string } }) => {
-    const book: BookType = await getDetailBook(params.id);
+  const { id } = await params;
+    const book: BookType = await getDetailBook(id);
 
   return (
     <div className="container mx-auto p-4">

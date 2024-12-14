@@ -5,13 +5,12 @@ export async function GET(
     request: Request,
     { params }: { params: { userId: string } }
   ): Promise<NextResponse> {
-    const userId = params.userId;
+    const { userId } = await params;
   
     try {
       const purchase = await prisma.purchase.findMany({
         where: { userId: userId },
       });
-      console.log(purchase);
   
       return NextResponse.json(purchase);
     } catch (err) {
