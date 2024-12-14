@@ -3,7 +3,13 @@ import React from "react";
 import { getDetailBook } from "../../lib/microcms/clients";
 import { BookType } from "@/app/types/types";
 
-const DetailBook = async ({ params }: { params:  { id: string } }) => {
+type DetailBookProps = {
+  params: {
+    id: string;
+  };
+};
+
+const DetailBook = async ({ params }: DetailBookProps) => {
   const book: BookType = await getDetailBook(params.id);
 
   return (
