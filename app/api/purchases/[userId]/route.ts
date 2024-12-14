@@ -4,7 +4,7 @@ import prisma from "../../../lib/prisma";
 export async function GET(
     request: Request,
     { params }: { params: { userId: string } }
-  ) {
+  ): Promise<NextResponse> {
     const userId = params.userId;
   
     try {
