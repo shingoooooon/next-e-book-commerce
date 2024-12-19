@@ -1,7 +1,9 @@
-const Modal = ({ handlePurchaseConfirm, handleCancel }: {
-    handlePurchaseConfirm: () => void;
-    handleCancel: () => void;
-  }) => {
+type ModalProps = {
+    handlePurchaseConfirm: () => void
+    handleCancel: () => void
+  }
+
+const Modal = ({ handlePurchaseConfirm, handleCancel }: ModalProps) => {
 return (
     <div className="fixed inset-0 bg-slate-900 bg-opacity-50 flex justify-center items-center modal">
             <div className="bg-white p-8 rounded-lg">
