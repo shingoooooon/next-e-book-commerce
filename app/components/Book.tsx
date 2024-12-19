@@ -5,6 +5,7 @@ import { BookType, User } from "../types/types";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Modal from "./Modal";
+import StarRating from "./StarRating";
 
 type BookProps = {
   book: BookType
@@ -93,8 +94,9 @@ const Book = ({ book, isPurchased, user }: BookProps) => {
           />
           <div className="px-4 py-4 bg-slate-100 rounded-b-md">
             <h2 className="text-lg font-semibold">{book.title}</h2>
-            <p className="mt-2 text-lg text-slate-600">この本は○○...</p>
-            <p className="mt-2 text-md text-slate-700">{book.price}円
+            <p className="mt-2 text-lg text-slate-600">{book.author}</p>
+            <StarRating rating={book.rating} />
+            <p className="text-md text-slate-700">￥{book.price}
             </p>
           </div>
         </a>

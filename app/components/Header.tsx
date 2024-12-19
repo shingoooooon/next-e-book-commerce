@@ -40,7 +40,7 @@ const Header = async () => {
             ""
           )}
 
-          <Link href={`/profile`}>
+          <Link href={ user ? "/profile" : "/api/auth/signin"}>
             <Image
               className="rounded-full"
               width={50}

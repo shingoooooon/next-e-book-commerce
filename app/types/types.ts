@@ -4,6 +4,8 @@ type BookType = {
     content: string,
     price: number,
     thumbnail: { url: string }
+    author: string,
+    rating: number,
     createdAt: string,
     updatedAt: string,
     publishedAt: string,
