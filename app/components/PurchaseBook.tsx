@@ -2,6 +2,7 @@ import React from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { BookType } from "../types/types";
+import StarRating from "./StarRating";
 
 type PurchaseBookProps = {
     purchaseBook: BookType
@@ -23,8 +24,9 @@ const PurchaseBook = ({ purchaseBook } : PurchaseBookProps) => {
       />
       <div className="px-4 py-4 bg-slate-100 rounded-b-md">
         <h2 className="text-lg font-semibold">{purchaseBook.title}</h2>
-        <p className="mt-2 text-lg text-slate-600"></p>
-        <p className="mt-2 text-md text-slate-700">Price：￥{purchaseBook.price}</p>
+        <p className="mt-2 text-lg text-slate-600">{purchaseBook.author}</p>
+        <StarRating rating={purchaseBook.rating} />
+        <p className="text-md text-slate-700">￥{purchaseBook.price}</p>
       </div>
     </Link>
   );
