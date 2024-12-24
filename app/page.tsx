@@ -10,14 +10,21 @@ export default async function Home() {
   const session = await getServerSession(nextAuthOptions);
   const user: User = session?.user as User;
 
-  let purchaseBookIds: string[];
+  let purchaseBookIds: string[] = [];
 
   if (user) {
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/purchases/${user.id}`
-    );
-    const purchasesData = await res.json();
-    purchaseBookIds = purchasesData.map((purchase: Purchase) => purchase.bookId);
+    try {
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/purchases/${user.id}`
+      );
+      const purchasesData = await res.json();
+      purchaseBookIds = Array.isArray(purchasesData) 
+        ? purchasesData.map((purchase: Purchase) => purchase.bookId)
+        : [];
+    } catch (error) {
+      console.error("Error fetching purchases:", error);
+      purchaseBookIds = [];
+    }
   }
 
   return (
@@ -30,7 +37,7 @@ export default async function Home() {
           <Book
             key={book.id}
             book={book}
-            isPurchased={purchaseBookIds?.includes(book.id)}
+            isPurchased={purchaseBookIds.includes(book.id)}
             user={user}
           />
         ))}
