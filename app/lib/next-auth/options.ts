@@ -1,4 +1,4 @@
-import { PrismaAdapter } from "@next-auth/prisma-adapter";
+import { PrismaAdapter } from "@auth/prisma-adapter";
 import { NextAuthOptions } from "next-auth";
 import GithubProvider from "next-auth/providers/github"
 import GoogleProvider from "next-auth/providers/google"
@@ -17,16 +17,17 @@ export const nextAuthOptions: NextAuthOptions = {
         })
     ],
     adapter: PrismaAdapter(prisma),
+    session: {
+        strategy: "database",
+        maxAge: 30 * 24 * 60 * 60, // 30 days
+    },
     callbacks: {
-        session: ({ session, user }) => {
-            return {
-                ...session,
-                user: {
-                    ...session.user,
-                    id: user.id
-                }
+        session: async ({ session, user }) => {
+            if (session?.user) {
+                session.user.id = user.id;
             }
-        }
+            return session;
+        },
     },
     secret: process.env.NEXTAUTH_SECRET
 }
