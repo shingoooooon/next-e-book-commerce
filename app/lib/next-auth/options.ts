@@ -1,36 +1,37 @@
-import { PrismaAdapter } from "@auth/prisma-adapter";
 import { NextAuthOptions } from "next-auth";
-import GithubProvider from "next-auth/providers/github"
-import GoogleProvider from "next-auth/providers/google"
-import prisma from "../prisma"
+import GithubProvider from "next-auth/providers/github";
+import GoogleProvider from "next-auth/providers/google";
 
 export const nextAuthOptions: NextAuthOptions = {
-    debug: true,
-    providers: [
-        GithubProvider({
-            clientId: process.env.GITHUB_ID!,
-            clientSecret: process.env.GITHUB_SECRET!,
-          }),
-        GoogleProvider({
-            clientId: process.env.GOOGLE_CLIENT_ID!,
-            clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
-        })
-    ],
-    adapter: PrismaAdapter(prisma),
-    session: {
-        strategy: "jwt",
-        maxAge: 30 * 24 * 60 * 60, // 30日
+  providers: [
+    GithubProvider({
+      clientId: process.env.GITHUB_ID!,
+      clientSecret: process.env.GITHUB_SECRET!,
+    }),
+    GoogleProvider({
+      clientId: process.env.GOOGLE_CLIENT_ID!,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+    })
+  ],
+  session: {
+    strategy: "jwt",
+  },
+  secret: process.env.NEXTAUTH_SECRET,
+  callbacks: {
+    jwt: async ({ token, user, account }) => {
+      if (user) {
+        token.id = user.id;
+      }
+      if (account) {
+        token.accessToken = account.access_token;
+      }
+      return token;
     },
-    jwt: {
-        secret: process.env.NEXTAUTH_SECRET,
+    session: async ({ session, token }) => {
+      if (session?.user) {
+        session.user.id = token.id as string;
+      }
+      return session;
     },
-    callbacks: {
-        session: async ({ session, token }) => {
-            if (session?.user) {
-                session.user.id = token.sub!;
-            }
-            return session;
-        },
-    },
-    secret: process.env.NEXTAUTH_SECRET
-}
+  },
+};
