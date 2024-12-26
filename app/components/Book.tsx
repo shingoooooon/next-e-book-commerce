@@ -16,6 +16,7 @@ type BookProps = {
 // eslint-disable-next-line react/display-name
 const Book = ({ book, isPurchased, user }: BookProps) => {
   const [showModal, setShowModal] = useState(false);
+  const [showNotification, setShowNotification] = useState(false);
   const router = useRouter();
 
   const startCheckout = async () => {
@@ -44,7 +45,9 @@ const Book = ({ book, isPurchased, user }: BookProps) => {
 
   const handlePurchaseClick = () =>{
     if(isPurchased) {
-      alert("You have already purchased this book.");
+      setShowNotification(true);
+      setTimeout(() => setShowNotification(false), 3000);
+      // alert("You have already purchased this book.");
     } else {
       setShowModal(true);
     }
@@ -101,6 +104,11 @@ const Book = ({ book, isPurchased, user }: BookProps) => {
           </div>
         </a>
         {showModal && <Modal handlePurchaseConfirm={handlePurchaseConfirm} handleCancel={handleCancel}/>}
+        {showNotification && (
+          <div className="fixed top-4 right-4 bg-blue-500 text-white px-4 py-2 rounded shadow-lg modal">
+            You have already purchased this book.
+          </div>
+        )} 
       </div>
     </>
   );
