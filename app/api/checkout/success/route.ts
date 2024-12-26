@@ -2,43 +2,76 @@
 import prisma from "../../../lib/prisma"
 import { NextResponse } from "next/server"
 import Stripe from "stripe"
+import { getServerSession } from "next-auth";
+import { nextAuthOptions } from "@/app/lib/next-auth/options";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
 
 // save purchase history
-export const POST = async (request: Request) => {
-    const { sessionId } = await request.json();
-
+export async function POST(req: Request) {
     try {
-        const session = await stripe.checkout.sessions.retrieve(sessionId);
+        const session = await getServerSession(nextAuthOptions);
+        
+        if (!session?.user?.email) {
+            return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+        }
+        
+        const { sessionId } = await req.json();
+        const stripeSession = await stripe.checkout.sessions.retrieve(sessionId);
 
+        if (!stripeSession?.metadata?.bookId) {
+            return NextResponse.json(
+                { error: "No bookId found in session" },
+                { status: 400 }
+            );
+        }
 
-        const userId = session.client_reference_id;
-        const bookId = session.metadata?.bookId;
+        const userId = stripeSession.client_reference_id;
+        const bookId = stripeSession.metadata?.bookId;
 
-        if (!userId || !bookId) {
-            throw new Error("Missing required session data: userId or bookId");
+        // ユーザーの取得または作成
+        let user = await prisma.user.findUnique({
+            where: { email: session.user.email },
+            });
+
+            if (!user) {
+            user = await prisma.user.create({
+                data: {
+                    id: userId!,
+                    email: session.user.email!,
+                    name: session.user.name || "",
+                    image: session.user.image || "",
+                },
+            });
         }
 
         const existPurchase = await prisma.purchase.findFirst({
             where: {
-                userId: userId,
+                userId: userId!,
                 bookId: bookId,
             }
         })
 
         if (!existPurchase) {
+            // 購入記録の作成
             const purchase = await prisma.purchase.create({
                 data: {
-                    userId: userId,
-                    bookId: bookId,
-                }
-            })
+                    userId: user.id,
+                    bookId: stripeSession.metadata.bookId,
+                },
+            });
+            console.log('purchase');
+            console.log(purchase);
             return NextResponse.json({ purchase });
         } else {
-            NextResponse.json({ message: 'This book is already purchased'})
+            return NextResponse.json({ message: 'This book is already purchased'})
         }
-    } catch (err) {
-        return NextResponse.json(err);
+
+    } catch (error) {
+        console.error("Checkout success error:", error);
+        return NextResponse.json(
+            { error: "Internal Server Error" },
+            { status: 500 }
+        );
     }
 }
