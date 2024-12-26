@@ -11,7 +11,7 @@ const Header = async () => {
   const user = session?.user as User;
 
   return (
-    <header className="bg-slate-600 text-gray-100 shadow-lg">
+    <header className="bg-slate-600 text-gray-100 shadow-lg sticky top-0 z-50">
       <nav className="flex items-center justify-between p-4">
         <Link href={"/"} className="text-xl font-bold">
           e-book Commerce
