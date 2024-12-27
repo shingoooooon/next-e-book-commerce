@@ -1,3 +1,9 @@
+<img width="1707" alt="Screenshot 2024-12-24 at 3 32 30 PM" src="https://github.com/user-attachments/assets/d26f4a42-0352-4e83-a806-cadc8a67ab70" />
+
+<img width="1385" alt="ebookcommerce2" src="https://github.com/user-attachments/assets/627ebbf6-ea4d-4f23-b9bb-cf3346c9b9c7" />
+
+<img width="1689" alt="ebookcommerce3" src="https://github.com/user-attachments/assets/a5614cbe-8c04-41a0-a085-1e8a38c8c967" />
+
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 ## Getting Started
