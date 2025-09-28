@@ -1,3 +1,5 @@
+# next-e-book-commerce
+<img width="1707" alt="Screenshot 2024-12-24 at 3 32 30 PM" src="https://github.com/user-attachments/assets/d26f4a42-0352-4e83-a806-cadc8a67ab70" />
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 ## Getting Started
@@ -34,4 +36,4 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
-# next-e-book-commerce
+
