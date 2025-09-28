@@ -17,11 +17,13 @@ export default async function ProfilePage() {
     );
     const purchasesData = await res.json();
 
-    purchaseBooks = await Promise.all(
-      purchasesData.map(async (purchase: Purchase) => {
-        return await getDetailBook(purchase.bookId);
-      })
-    );
+    if (!purchasesData) {
+      purchaseBooks = await Promise.all(
+        purchasesData.map(async (purchase: Purchase) => {
+          return await getDetailBook(purchase.bookId);
+        })
+      );
+    }
   }
 
   return (
@@ -43,16 +45,23 @@ export default async function ProfilePage() {
       </div>
 
       <span className="font-medium text-lg mb-4 mt-4 block">My Books</span>
-      {purchaseBooks?.map((purchaseBook: BookType) => {
-        return (
-          <div
-            key={purchaseBook.id}
-            className="flex items-center gap-6"
-          >
-            <PurchaseBook purchaseBook={purchaseBook}/>
-          </div>
-        )
-      })}
+
+      {purchaseBooks && purchaseBooks.length > 0 ? (
+        purchaseBooks.map((purchaseBook: BookType) => {
+          return (
+            <div
+              key={purchaseBook.id}
+              className="flex items-center gap-6"
+            >
+              <PurchaseBook purchaseBook={purchaseBook} />
+            </div>
+          )
+        })
+      ) : (
+        <div className="text-center text-gray-500 py-8">
+          No purchase yet
+        </div>
+      )}
     </div>
   );
 }
